@@ -10,12 +10,13 @@ export const metadata = {
 
 type PageProps = {
   params: Promise<{ id: string }>;
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }> | undefined;
 };
 
-const AuditDetailPage: NextPage<PageProps> = async ({ params }) => {
+const AuditDetailPage: NextPage<PageProps> = async ({ params, searchParams }) => {
   const user = await requireAuth();
-  const resolvedParams = await params; // Resolve the Promise to get the id
+  const resolvedParams = await params; // Resolve the params Promise
+  const resolvedSearchParams = await searchParams; // Resolve the searchParams Promise, if present
 
   const audit = await prisma.audit.findUnique({
     where: { id: resolvedParams.id },
