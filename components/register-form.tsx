@@ -14,7 +14,7 @@ import { Alert } from "@/components/ui/alert"
 export function RegisterForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
-  const [_error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -64,7 +64,7 @@ export function RegisterForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-6">
-      {_error && <Alert variant="destructive">{_error}</Alert>}
+      {error && <Alert variant="destructive">{error}</Alert>}
 
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
