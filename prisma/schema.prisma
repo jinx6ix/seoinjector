@@ -24,6 +24,9 @@ model Page {
   url         String
   title       String
   siteId      String
+  h1          String?  // Optional H1 tag content
+  status      Int      // HTTP status code
+  wordCount   Int      // Word count from crawl
   metaDesc  String?  // Add metaDesc, optional if it can be null
   status      Int?     // Add this field, optional to handle pages not yet crawled
   lastCrawled DateTime? // ✅ Add this line
@@ -33,6 +36,7 @@ model Page {
   audits      Audit[]   @relation("PageAudits") // <-- add this
 
   @@unique([siteId, url]) // <-- This is required for upsert
+  @@map("pages")
 }
 
 model Site {
