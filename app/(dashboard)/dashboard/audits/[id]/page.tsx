@@ -13,10 +13,9 @@ type PageProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }> | undefined;
 };
 
-const AuditDetailPage: NextPage<PageProps> = async ({ params, searchParams }) => {
+const AuditDetailPage: NextPage<PageProps> = async ({ params }) => {
   const user = await requireAuth();
   const resolvedParams = await params; // Resolve the params Promise
-  const resolvedSearchParams = await searchParams; // Resolve the searchParams Promise, if present
 
   const audit = await prisma.audit.findUnique({
     where: { id: resolvedParams.id },
