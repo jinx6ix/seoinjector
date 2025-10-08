@@ -88,6 +88,9 @@ model Keyword {
   position Int?   // Add this (optional if it can be null)
   user    User   @relation(fields: [userId], references: [id])
   siteId  String
+  difficulty  Int?     // Add difficulty field, optional
+  cpc         Float?   // Add cpc field, optional
+  competition String?  // Add competition field, optional
   site    Site   @relation(fields: [siteId], references: [id])
   @@unique([siteId, keyword]) // Add composite unique constraint
 }
