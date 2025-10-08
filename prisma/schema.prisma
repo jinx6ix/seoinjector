@@ -82,6 +82,7 @@ model Keyword {
   keyword String
   volume  Int? // ← Add this line
   userId  String
+  position Int?   // Add this (optional if it can be null)
   user    User   @relation(fields: [userId], references: [id])
   siteId  String
   site    Site   @relation(fields: [siteId], references: [id])
