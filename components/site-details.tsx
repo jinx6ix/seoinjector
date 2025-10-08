@@ -18,14 +18,6 @@ interface SiteDetailsProps {
   }
 }
 
-interface Keyword {
-  id: string;
-  siteId: string;
-  userId: string;
-  keyword: string;
-  volume: number | null;
-  position?: number; // Add position as an optional property
-}
 
 export function SiteDetails({ site }: SiteDetailsProps) {
   return (
