@@ -18,7 +18,7 @@ export function AddSiteForm() {
   const [url, setUrl] = useState("")
   const [connector, setConnector] = useState<"script" | "wordpress" | "oauth">("script")
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [_error, setError] = useState<string | null>(null)
   const [apiKey, setApiKey] = useState<string | null>(null)
 
   async function handleSubmit(e: React.FormEvent) {
@@ -75,7 +75,7 @@ export function AddSiteForm() {
                 Copy
               </Button>
             </div>
-            <p className="text-xs text-muted-foreground">Save this key securely. You'll need it for integration.</p>
+            <p className="text-xs text-muted-foreground">Save this key securely. You&apos;ll need it for integration.</p>
           </div>
 
           {connector === "script" && (
@@ -87,7 +87,7 @@ export function AddSiteForm() {
                 </code>
               </div>
               <p className="text-sm text-muted-foreground">
-                Add this script tag to your website's {"<head>"} section to enable automatic tracking.
+                Add this script tag to your website&apos;s {"<head>"} section to enable automatic tracking.
               </p>
             </div>
           )}
@@ -155,7 +155,7 @@ export function AddSiteForm() {
                   <div>
                     <h4 className="font-medium">Script Tag Integration</h4>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      Add a simple script tag to your website's HTML. Works with any platform or CMS.
+                      Add a simple script tag to your website&apos;s HTML. Works with any platform or CMS.
                     </p>
                   </div>
                 </div>
@@ -192,7 +192,7 @@ export function AddSiteForm() {
           </Tabs>
         </div>
 
-        {error && <Alert variant="destructive">{error}</Alert>}
+        {_error && <Alert variant="destructive">{_error}</Alert>}
 
         <Button type="submit" disabled={isLoading} className="w-full">
           {isLoading ? (

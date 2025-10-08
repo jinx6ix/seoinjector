@@ -12,11 +12,19 @@ import { Loader2, Sparkles } from "lucide-react"
 
 type ContentType = "meta" | "outline" | "article"
 
+interface GeneratedContent {
+  metaTitle?: string;
+  metaDescription?: string;
+  h1?: string;
+  outline?: string[];
+  content?: string;
+}
+
 export function ContentGenerator() {
   const [keyword, setKeyword] = useState("")
   const [contentType, setContentType] = useState<ContentType>("meta")
   const [isLoading, setIsLoading] = useState(false)
-  const [result, setResult] = useState<any>(null)
+  const [result, setResult] = useState<GeneratedContent | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   async function handleGenerate(e: React.FormEvent) {
@@ -148,7 +156,7 @@ export function ContentGenerator() {
           {contentType === "article" && (
             <div className="prose max-w-none">
               <h1>{result.h1}</h1>
-              <div dangerouslySetInnerHTML={{ __html: result.content }} />
+              <div dangerouslySetInnerHTML={{ __html: result.content || "" }} />
             </div>
           )}
         </Card>

@@ -75,15 +75,18 @@ async function fetchFromSerpApi(query: string): Promise<KeywordData[]> {
   return keywords
 }
 
-function extractSerpFeatures(data: any): string[] {
+function extractSerpFeatures(data: unknown): string[] {
   const features: string[] = []
 
-  if (data.answer_box) features.push("Featured Snippet")
-  if (data.knowledge_graph) features.push("Knowledge Graph")
-  if (data.related_questions) features.push("People Also Ask")
-  if (data.local_results) features.push("Local Pack")
-  if (data.shopping_results) features.push("Shopping Results")
-  if (data.top_stories) features.push("Top Stories")
+  if (typeof data === 'object' && data !== null) {
+    const dataObj = data as Record<string, unknown>;
+    if (dataObj.answer_box) features.push("Featured Snippet")
+    if (dataObj.knowledge_graph) features.push("Knowledge Graph")
+    if (dataObj.related_questions) features.push("People Also Ask")
+    if (dataObj.local_results) features.push("Local Pack")
+    if (dataObj.shopping_results) features.push("Shopping Results")
+    if (dataObj.top_stories) features.push("Top Stories")
+  }
 
   return features
 }

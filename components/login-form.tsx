@@ -14,7 +14,7 @@ import { Alert } from "@/components/ui/alert"
 export function LoginForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [_error, setError] = useState<string | null>(null)
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -48,7 +48,7 @@ export function LoginForm() {
 
   return (
     <form onSubmit={onSubmit} className="space-y-6">
-      {error && <Alert variant="destructive">{error}</Alert>}
+      {_error && <Alert variant="destructive">{_error}</Alert>}
 
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
@@ -65,7 +65,7 @@ export function LoginForm() {
       </Button>
 
       <p className="text-center text-sm text-muted-foreground">
-        Don't have an account?{" "}
+        Don&apos;t have an account?{" "}
         <Link href="/register" className="font-medium text-primary hover:underline">
           Sign up
         </Link>

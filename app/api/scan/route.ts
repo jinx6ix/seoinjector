@@ -12,8 +12,13 @@ const scanSchema = z.object({
   siteId: z.string().optional(),
 });
 
+interface FetchPageResult {
+  html: string;
+  status: number;
+}
+
 // Scan page with retry for 429 and SerpAPI fallback for 403
-async function fetchPage(url: string, retries = 3): Promise<{ html: string; status: number }> {
+async function fetchPage(url: string, retries = 3): Promise<FetchPageResult> {
   try {
     const res = await axios.get(url, {
       headers: {
@@ -48,8 +53,9 @@ async function fetchPage(url: string, retries = 3): Promise<{ html: string; stat
     if (res.status >= 400) throw new Error(`Failed to fetch page, status ${res.status}`);
 
     return { html: res.data, status: res.status };
-  } catch (err: any) {
-    throw new Error(err.message || "Failed to fetch page");
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : "Failed to fetch page";
+    throw new Error(errorMessage);
   }
 }
 
@@ -176,7 +182,7 @@ export async function POST(req: Request) {
     console.log(`[SCAN_REQUEST] ${session.user.email} scanning ${url}`);
 
     // Fetch and analyze page
-    const { html, status } = await fetchPage(url);
+    const { html } = await fetchPage(url);
     const result = analyzeSEO(html);
 
     // Handle site determination
@@ -297,8 +303,8 @@ export async function POST(req: Request) {
       }
     });
 
-  } catch (error: any) {
-    console.error("[SCAN_ERROR]", error.message || error);
+  } catch (error: unknown) {
+    console.error("[SCAN_ERROR]", error instanceof Error ? error.message : "Unknown error");
     
     if (error instanceof z.ZodError) {
       return NextResponse.json({ 
@@ -308,7 +314,7 @@ export async function POST(req: Request) {
     }
     
     return NextResponse.json({ 
-      error: error.message || "Failed to scan page" 
+      error: error instanceof Error ? error.message : "Failed to scan page" 
     }, { status: 500 });
   }
 }

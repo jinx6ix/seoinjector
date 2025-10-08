@@ -32,7 +32,7 @@ export async function scanPage(url: string): Promise<ScanResult> {
 
     html = response.data
     status = response.status
-  } catch (error: any) {
+  } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 429) {
         console.warn(`[SCAN_RETRY] 429 detected, retrying after 2000ms...`)
@@ -46,7 +46,8 @@ export async function scanPage(url: string): Promise<ScanResult> {
         return serpData
       }
 
-      throw new Error(`Failed to scan ${url}: ${error.response?.status || error.message}`)
+      const errorMessage = error.response?.status || error.message
+      throw new Error(`Failed to scan ${url}: ${errorMessage}`)
     }
     throw error
   }

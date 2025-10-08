@@ -19,14 +19,14 @@ export function Hero() {
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            Transform your website's search rankings with AI-powered automation. Get real-time keyword research,
+            Transform your website&apos;s search rankings with AI-powered automation. Get real-time keyword research,
             automated page audits, and intelligent content generation—all in one platform.
           </p>
 
           <p className="mx-auto mt-4 max-w-2xl text-pretty leading-relaxed text-muted-foreground">
             Stop spending hours on manual SEO tasks. Our platform analyzes your site, identifies opportunities, and
-            helps you implement fixes instantly. Whether you're optimizing meta tags, researching keywords, or
-            generating SEO-friendly content, we've got you covered.
+            helps you implement fixes instantly. Whether you&apos;re optimizing meta tags, researching keywords, or
+            generating SEO-friendly content, we&apos;ve got you covered.
           </p>
 
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
