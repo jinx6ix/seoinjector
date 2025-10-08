@@ -59,6 +59,8 @@ model Audit {
   url         String // Added this field
   pageId      String?
   score       Int
+  performanceScore  Int?     // Add this field (optional if it can be null)
+  accessibilityScore Int?   // Add this field (optional if it can be null)
   seoScore    Int
   issues      Json
   suggestions Json
