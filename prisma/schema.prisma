@@ -24,18 +24,16 @@ model Page {
   url         String
   title       String
   siteId      String
-  h1          String?  // Optional H1 tag content
-  status      Int      // HTTP status code
-  wordCount   Int      // Word count from crawl
-  metaDesc  String?  // Add metaDesc, optional if it can be null
-  status      Int?     // Add this field, optional to handle pages not yet crawled
-  lastCrawled DateTime? // ✅ Add this line
+  h1          String?   // Optional H1 tag content
+  status      Int?      // HTTP status code, optional for uncrawled pages
+  wordCount   Int?      // Word count from crawl, optional if not yet crawled
+  metaDesc    String?   // Optional meta description
+  lastCrawled DateTime? // Timestamp of last crawl
   site        Site      @relation(fields: [siteId], references: [id])
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  audits      Audit[]   @relation("PageAudits") // <-- add this
-
-  @@unique([siteId, url]) // <-- This is required for upsert
+  audits      Audit[]   @relation("PageAudits")
+  @@unique([siteId, url])
   @@map("pages")
 }
 
