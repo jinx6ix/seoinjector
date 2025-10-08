@@ -8,6 +8,7 @@ export interface KeywordData {
   cpc: number
   competition: string
   serpFeatures: string[]
+  position?: number; // Add position as an optional property
 }
 
 export async function searchKeywords(query: string): Promise<KeywordData[]> {
