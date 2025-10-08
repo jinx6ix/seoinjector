@@ -66,14 +66,15 @@ model Audit {
   score       Int
   performanceScore  Int?     // Add this field (optional if it can be null)
   accessibilityScore Int?   // Add this field (optional if it can be null)
-  seoScore    Int
-  issues      Json
+  seoScore    Int?
+  bestPracticesScore Int?    // Add bestPracticesScore, optional
+  issues      Json?
   suggestions Json
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  site Site  @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  site Site  @relation(fields: [siteId], references: [id])
   page Page? @relation("PageAudits", fields: [pageId], references: [id]) // <-- add this
 
   @@index([userId])
