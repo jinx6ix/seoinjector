@@ -58,27 +58,29 @@ model Site {
 }
 
 model Audit {
-  id          String   @id @default(cuid())
-  userId      String
-  siteId      String
-  url         String // Added this field
-  pageId      String?
-  score       Int
-  performanceScore  Int?     // Add this field (optional if it can be null)
-  accessibilityScore Int?   // Add this field (optional if it can be null)
-  seoScore    Int?
-  bestPracticesScore Int?    // Add bestPracticesScore, optional
-  issues      Json?
-  suggestions Json
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                   String   @id @default(cuid())
+  userId               String?
+  siteId               String
+  url                  String? // Optional, for page-specific audits
+  pageId               String?
+  score                Int?
+  performanceScore     Int?     // CoreWeb Vitals performance score
+  seoScore             Int?     // SEO score
+  accessibilityScore   Int?     // Accessibility score
+  bestPracticesScore   Int?     // Best practices score
+  metrics              Json?    // Add this: JSON for metrics like { fcp: 1.2, lcp: 2.1, cls: 0.05 }
+  issues               Json?    // JSON array for issues (if not relational)
+  suggestions          Json?    // JSON array for suggestions
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 
-  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  site Site  @relation(fields: [siteId], references: [id])
-  page Page? @relation("PageAudits", fields: [pageId], references: [id]) // <-- add this
+  user                 User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  site                 Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  page                 Page?    @relation("PageAudits", fields: [pageId], references: [id], onDelete: SetNull)
 
   @@index([userId])
   @@index([siteId])
+  @@index([pageId])
 }
 
 model Keyword {
