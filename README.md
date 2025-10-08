@@ -1,36 +1,227 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SEO Automation Platform
 
-## Getting Started
+A complete, production-ready SEO automation platform built with Next.js, PostgreSQL, Redis, OpenAI, and SerpApi. Automatically optimize your website's SEO with AI-powered content generation, keyword research, page audits, and competitor analysis.
 
-First, run the development server:
+## Features
 
-```bash
+- **SEO-Optimized Landing Page** - Server-side rendered with JSON-LD schema, meta tags, and semantic HTML
+- **Authentication System** - Secure user authentication with NextAuth.js
+- **Dashboard** - Comprehensive overview of site performance, keywords, and audits
+- **Keyword Research** - Real-time keyword data with search volume, difficulty, CPC, and SERP features
+- **Page Audit** - Lighthouse-powered audits with Core Web Vitals and actionable suggestions
+- **Content Generator** - AI-powered content creation with SEO optimization
+- **Site Connection** - Multiple connection methods (script tag, WordPress plugin, OAuth)
+- **Competitor Analysis** - Track and analyze competitor rankings
+- **Sitemap Generation** - Automatic sitemap.xml and robots.txt generation
+- **Search Console Integration** - Fetch performance data from Google Search Console
+
+## Tech Stack
+
+- **Frontend**: Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS
+- **Backend**: Next.js API Routes (serverless)
+- **Database**: PostgreSQL with Prisma ORM
+- **Caching**: Redis (Upstash)
+- **AI**: OpenAI GPT-4
+- **SEO Data**: SerpApi + Google Ads API
+- **Authentication**: NextAuth.js v5
+- **Deployment**: Vercel
+
+## Prerequisites
+
+- Node.js 18+ and npm/yarn/pnpm
+- PostgreSQL database
+- Redis instance (Upstash recommended)
+- OpenAI API key
+- SerpApi key
+- (Optional) Google Ads API credentials
+- (Optional) Google Search Console API credentials
+
+## Environment Variables
+
+Copy `.env.example` to `.env.local` and fill in your credentials:
+
+\`\`\`bash
+cp .env.example .env.local
+\`\`\`
+
+### Required Variables
+
+- \`DATABASE_URL\` - PostgreSQL connection string
+- \`REDIS_URL\` - Redis URL (Upstash)
+- \`REDIS_TOKEN\` - Redis token (Upstash)
+- \`NEXTAUTH_URL\` - Your app URL (http://localhost:3000 for dev)
+- \`NEXTAUTH_SECRET\` - Generate with: \`openssl rand -base64 32\`
+- \`OPENAI_API_KEY\` - OpenAI API key
+- \`SERPAPI_KEY\` - SerpApi key
+
+### Optional Variables
+
+- \`GOOGLE_ADS_CLIENT_ID\` - Google Ads OAuth client ID
+- \`GOOGLE_ADS_CLIENT_SECRET\` - Google Ads OAuth client secret
+- \`GOOGLE_ADS_DEVELOPER_TOKEN\` - Google Ads developer token
+- \`GOOGLE_ADS_REFRESH_TOKEN\` - Google Ads refresh token
+- \`GOOGLE_SEARCH_CONSOLE_CLIENT_ID\` - GSC OAuth client ID
+- \`GOOGLE_SEARCH_CONSOLE_CLIENT_SECRET\` - GSC OAuth client secret
+- \`GOOGLE_SEARCH_CONSOLE_REFRESH_TOKEN\` - GSC refresh token
+- \`SENTRY_DSN\` - Sentry error tracking DSN
+
+## Installation
+
+1. **Clone the repository**
+
+\`\`\`bash
+git clone <repository-url>
+cd seo-automation-platform
+\`\`\`
+
+2. **Install dependencies**
+
+\`\`\`bash
+npm install
+\`\`\`
+
+3. **Setup database**
+
+\`\`\`bash
+# Push schema to database
+npm run db:push
+
+# Seed with demo data
+npm run db:seed
+\`\`\`
+
+4. **Run development server**
+
+\`\`\`bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+\`\`\`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Demo Credentials
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+After seeding, you can login with:
+- **Email**: demo@example.com
+- **Password**: demo123
 
-## Learn More
+## Deployment to Vercel
 
-To learn more about Next.js, take a look at the following resources:
+### 1. Push to GitHub
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+\`\`\`bash
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin <your-github-repo-url>
+git push -u origin main
+\`\`\`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 2. Deploy to Vercel
 
-## Deploy on Vercel
+1. Go to [vercel.com](https://vercel.com) and import your repository
+2. Add environment variables in Vercel dashboard (Settings → Environment Variables)
+3. Deploy!
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 3. Setup Database & Redis
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Option A: Use Vercel Integrations**
+- Add Neon (PostgreSQL) integration
+- Add Upstash (Redis) integration
+- Environment variables will be automatically added
+
+**Option B: Use External Services**
+- Create PostgreSQL database (Neon, Supabase, Railway, etc.)
+- Create Redis instance (Upstash, Redis Cloud, etc.)
+- Add connection strings to Vercel environment variables
+
+### 4. Run Database Migration
+
+After first deployment, run migrations:
+
+\`\`\`bash
+# In Vercel dashboard, go to Settings → Functions
+# Or use Vercel CLI:
+vercel env pull .env.local
+npm run db:push
+npm run db:seed
+\`\`\`
+
+## API Endpoints
+
+### Scan & Audit
+- \`POST /api/scan\` - Crawl and audit a URL
+- \`GET /api/audits\` - List audits for a site
+- \`GET /api/audits/[id]\` - Get audit details
+
+### Keywords
+- \`GET /api/keywords?q=keyword\` - Search keywords with volume, difficulty, CPC
+- \`POST /api/keywords\` - Track a keyword for a site
+- \`GET /api/keywords/site/[siteId]\` - List tracked keywords
+
+### Content Generation
+- \`POST /api/generate\` - Generate SEO-optimized content
+- \`POST /api/generate/outline\` - Generate content outline
+- \`POST /api/generate/meta\` - Generate meta tags
+
+### Site Management
+- \`GET /api/sites\` - List user's sites
+- \`POST /api/sites\` - Add a new site
+- \`GET /api/sitemap/[siteId]\` - Generate sitemap.xml
+- \`POST /api/push-fix\` - Apply one-click fixes to site
+
+### Search Console
+- \`GET /api/search-console/[siteId]\` - Fetch GSC performance data
+
+## Project Structure
+
+\`\`\`
+├── app/                    # Next.js app directory
+│   ├── (auth)/            # Auth pages (login, register)
+│   ├── (dashboard)/       # Dashboard pages (protected)
+│   ├── api/               # API routes
+│   └── page.tsx           # Landing page
+├── components/            # React components
+│   ├── ui/               # shadcn/ui components
+│   ├── dashboard/        # Dashboard-specific components
+│   └── landing/          # Landing page components
+├── lib/                   # Utilities and configurations
+│   ├── db.ts             # Prisma client
+│   ├── redis.ts          # Redis client
+│   ├── rate-limit.ts     # Rate limiting
+│   └── seo/              # SEO utilities
+├── prisma/               # Database schema and migrations
+│   ├── schema.prisma     # Prisma schema
+│   └── seed.ts           # Seed script
+└── scripts/              # Utility scripts
+\`\`\`
+
+## Security Features
+
+- **Rate Limiting** - API endpoints protected with Redis-based rate limiting
+- **Authentication** - Secure session-based auth with NextAuth.js
+- **Input Validation** - Zod schemas for all API inputs
+- **SQL Injection Protection** - Prisma ORM with parameterized queries
+- **XSS Protection** - React's built-in XSS protection
+- **CORS** - Configured for production domains only
+
+## Performance Optimizations
+
+- **Redis Caching** - Keyword data cached for 1 hour
+- **Server Components** - Most pages use React Server Components
+- **Image Optimization** - Next.js Image component with automatic optimization
+- **Code Splitting** - Automatic code splitting with Next.js
+- **Edge Functions** - API routes deployed to Vercel Edge Network
+
+## Monitoring & Logging
+
+- **Sentry Integration** - Error tracking and performance monitoring
+- **Database Logging** - All actions logged to \`logs\` table
+- **Job Queue** - Background jobs tracked in \`jobs\` table
+
+## License
+
+MIT
+
+## Support
+
+For issues and questions, please open a GitHub issue or contact support.

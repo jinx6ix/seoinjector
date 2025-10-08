@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  name      String?
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now()) // ✅ ensure this line exists
+  role      String    @default("user")
+  sites     Site[]
+  audits    Audit[]
+  keywords  Keyword[]
+}
+
+model Page {
+  id          String    @id @default(cuid())
+  url         String
+  title       String
+  siteId      String
+  lastCrawled DateTime? // ✅ Add this line
+  site        Site      @relation(fields: [siteId], references: [id])
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  audits      Audit[]   @relation("PageAudits") // <-- add this
+
+  @@unique([siteId, url]) // <-- This is required for upsert
+}
+
+model Site {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  url       String
+  domain    String // ✅ Add this line
+  connector String
+  apiKey    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pages    Page[]
+  audits   Audit[]
+  keywords Keyword[]
+
+  @@index([userId])
+}
+
+model Audit {
+  id          String   @id @default(cuid())
+  userId      String
+  siteId      String
+  url         String // Added this field
+  pageId      String?
+  score       Int
+  seoScore    Int
+  issues      Json
+  suggestions Json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  site Site  @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  page Page? @relation("PageAudits", fields: [pageId], references: [id]) // <-- add this
+
+  @@index([userId])
+  @@index([siteId])
+}
+
+model Keyword {
+  id      String @id @default(cuid())
+  keyword String
+  volume  Int? // ← Add this line
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
+  siteId  String
+  site    Site   @relation(fields: [siteId], references: [id])
+}
