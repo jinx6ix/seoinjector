@@ -41,6 +41,7 @@ model Site {
   url       String
   domain    String // ✅ Add this line
   connector String
+  status    String?  @default("active") // Add this field, optional with default value
   apiKey    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
