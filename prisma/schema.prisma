@@ -89,4 +89,5 @@ model Keyword {
   user    User   @relation(fields: [userId], references: [id])
   siteId  String
   site    Site   @relation(fields: [siteId], references: [id])
+  @@unique([siteId, keyword]) // Add composite unique constraint
 }
