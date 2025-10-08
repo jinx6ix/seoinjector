@@ -24,6 +24,7 @@ model Page {
   url         String
   title       String
   siteId      String
+  status      Int?     // Add this field, optional to handle pages not yet crawled
   lastCrawled DateTime? // ✅ Add this line
   site        Site      @relation(fields: [siteId], references: [id])
   createdAt   DateTime  @default(now())
